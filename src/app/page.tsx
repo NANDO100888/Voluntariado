@@ -1,7 +1,16 @@
-import React from 'react';
-import { HeartHandshake, PawPrint, Gift, Search, MapPin, ArrowRight, Menu } from 'lucide-react';
+"use client";
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { HeartHandshake, PawPrint, Gift, Search, MapPin, ArrowRight, Menu, ChevronDown, X } from 'lucide-react';
 
 export default function HomePage() {
+  // Estado para controlar si el menú de celular está abierto o cerrado
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Función para cerrar el menú al hacer clic en un enlace
+  const closeMenu = () => setIsMobileMenuOpen(false);
+
   return (
     <main className="min-h-screen bg-[#F8FAFC] font-sans text-slate-800">
       
@@ -13,10 +22,45 @@ export default function HomePage() {
             <span className="font-extrabold text-xl tracking-tight text-slate-900">Voluntariado<span className="text-emerald-600">SCZ</span></span>
           </div>
           
+          {/* Navegación para Computadoras (Desktop) */}
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <span className="hover:text-emerald-600 cursor-pointer transition-colors">Iniciativas</span>
-            <span className="hover:text-emerald-600 cursor-pointer transition-colors">Organizaciones</span>
-            <span className="hover:text-emerald-600 cursor-pointer transition-colors">Mapa</span>
+            
+            {/* Dropdown: Iniciativas */}
+            <div className="relative group py-6">
+              <button className="flex items-center gap-1 hover:text-emerald-600 transition-colors">
+                Iniciativas <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className="absolute top-full left-0 w-48 bg-white border border-slate-100 shadow-xl rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <Link href="/iniciativas" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Ayuda a Personas</Link>
+                <Link href="/iniciativas" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Rescate Animal</Link>
+                <div className="my-1 border-t border-slate-100"></div>
+                <Link href="/iniciativas" className="block px-4 py-2 font-semibold text-emerald-600 hover:bg-emerald-50 transition-colors">Ver todas</Link>
+              </div>
+            </div>
+
+            {/* Dropdown: Organizaciones */}
+            <div className="relative group py-6">
+              <button className="flex items-center gap-1 hover:text-emerald-600 transition-colors">
+                Organizaciones <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className="absolute top-full left-0 w-56 bg-white border border-slate-100 shadow-xl rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <Link href="/organizaciones" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Refugios y Asilos</Link>
+                <Link href="/organizaciones" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Centros de Acopio</Link>
+                <Link href="/organizaciones" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Registrar mi ONG</Link>
+              </div>
+            </div>
+
+            {/* Dropdown: Mapa */}
+            <div className="relative group py-6">
+              <button className="flex items-center gap-1 hover:text-emerald-600 transition-colors">
+                Mapa <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className="absolute top-full left-0 w-48 bg-white border border-slate-100 shadow-xl rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <Link href="/mapa" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Mapa de Donaciones</Link>
+                <Link href="/mapa" className="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Zonas Críticas</Link>
+              </div>
+            </div>
+
           </div>
 
           <div className="flex items-center gap-4">
@@ -24,11 +68,48 @@ export default function HomePage() {
               <MapPin size={14} />
               Santa Cruz
             </div>
-            <button className="md:hidden text-slate-600">
-              <Menu size={24} />
+            
+            {/* Botón de Menú para Celulares */}
+            <button 
+              className="md:hidden text-slate-600 hover:text-emerald-600 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
+
+        {/* Menú Desplegable para Celulares */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-slate-100 shadow-xl absolute w-full left-0 top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <div className="px-6 py-6 flex flex-col gap-6">
+              
+              {/* Sección Iniciativas Celular */}
+              <div className="flex flex-col gap-3">
+                <span className="font-bold text-slate-900 border-b border-slate-100 pb-2">Iniciativas</span>
+                <Link href="/iniciativas" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Ayuda a Personas</Link>
+                <Link href="/iniciativas" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Rescate Animal</Link>
+                <Link href="/iniciativas" onClick={closeMenu} className="text-emerald-600 font-semibold pl-2">Ver todas</Link>
+              </div>
+
+              {/* Sección Organizaciones Celular */}
+              <div className="flex flex-col gap-3">
+                <span className="font-bold text-slate-900 border-b border-slate-100 pb-2">Organizaciones</span>
+                <Link href="/organizaciones" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Refugios y Asilos</Link>
+                <Link href="/organizaciones" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Centros de Acopio</Link>
+                <Link href="/organizaciones" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Registrar mi ONG</Link>
+              </div>
+
+              {/* Sección Mapa Celular */}
+              <div className="flex flex-col gap-3">
+                <span className="font-bold text-slate-900 border-b border-slate-100 pb-2">Mapa</span>
+                <Link href="/mapa" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Mapa de Donaciones</Link>
+                <Link href="/mapa" onClick={closeMenu} className="text-slate-600 pl-2 hover:text-emerald-600">Zonas Críticas</Link>
+              </div>
+
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section Moderno */}
@@ -115,14 +196,14 @@ export default function HomePage() {
       {/* Footer Limpio */}
       <footer className="bg-white border-t border-slate-100 py-12">
         <div className="max-w-7xl mx-auto px-6 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2 opacity-80">
+          <div className="flex items-center gap-2 opacity-80 justify-center md:justify-start">
             <HeartHandshake className="text-slate-400" size={20} />
             <span className="font-bold text-slate-400 tracking-tight">VoluntariadoSCZ</span>
           </div>
           <p className="text-sm text-slate-400">
             © 2026 Santa Cruz de la Sierra. Construido para ayudar.
           </p>
-          <div className="flex gap-6 text-sm font-medium text-slate-400">
+          <div className="flex justify-center gap-6 text-sm font-medium text-slate-400">
             <span className="hover:text-emerald-600 cursor-pointer">Privacidad</span>
             <span className="hover:text-emerald-600 cursor-pointer">Términos</span>
           </div>
